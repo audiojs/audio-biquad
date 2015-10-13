@@ -1,0 +1,44 @@
+{
+  "name": "audio-biquad",
+  "version": "1.0.0",
+  "description": "Biquad filter for PCM audio stream",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/audio-lab/biquad"
+  },
+  "keywords": [
+    "audio",
+    "pcm",
+    "stream",
+    "sound",
+    "biquad",
+    "filter",
+    "bandpass",
+    "lowpass",
+    "highpass",
+    "lpf",
+    "hpf",
+    "bpf",
+    "web-audio"
+  ],
+  "author": "Deema Yvanow <dfcreative@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/audio-lab/biquad/issues"
+  },
+  "homepage": "https://github.com/audio-lab/biquad",
+  "devDependencies": {
+    "audio-generator": "^1.0.3",
+    "audio-speaker": "^1.0.2",
+    "pcm-volume": "0.0.1"
+  },
+  "dependencies": {
+    "inherits": "^2.0.1",
+    "pcm-util": "^1.0.0",
+    "xtend": "^4.0.0"
+  }
+}
