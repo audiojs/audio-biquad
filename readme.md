@@ -19,6 +19,6 @@ Generator({
 ```
 
 > **Related**<br/>
-> [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode) — all the options for the filters</br>
-> [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode) — all the options for the filters</br>
-> [EQ Cookbook](http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt) — description of all the kings of filters</br>
+> [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode) — all the options for the filters.</br>
+> [BiquadFilterNode chromium source](https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/platform/audio/Biquad.cpp&rcl=1443871507&l=283) — source code inspiration.</br>
+> [EQ Cookbook](http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt) — description of all the kings of filters.</br>
