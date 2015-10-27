@@ -8,7 +8,6 @@
 var Transform = require('stream').Transform;
 var extend = require('xtend/mutable');
 var inherits = require('inherits');
-var os = require('os');
 var util = require('pcm-util');
 
 
@@ -89,13 +88,7 @@ Biquad.prototype.update = function () {
 
 
 /** Input/output PCM stream params */
-Biquad.prototype.channels = 2;
-Biquad.prototype.sampleRate = 44100;
-Biquad.prototype.bitDepth = 16;
-Biquad.prototype.signed = true;
-Biquad.prototype.float = false;
-Biquad.prototype.byteOrder = 'function' == os.endianness ? os.endianness() : 'LE';
-Biquad.prototype.interleaved = true;
+extend(Biquad.prototype, util.defaultFormat);
 
 
 /**
