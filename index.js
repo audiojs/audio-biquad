@@ -5,10 +5,9 @@
  * @module  audio-biquad
  */
 
-var Transform = require('stream').Transform;
+var Through = require('audio-through');
 var extend = require('xtend/mutable');
 var inherits = require('inherits');
-var util = require('pcm-util');
 
 
 /**
@@ -19,15 +18,7 @@ var util = require('pcm-util');
 function Biquad (options) {
 	if (!(this instanceof Biquad)) return new Biquad(options);
 
-	Transform.call(this);
-
-	extend(this, options);
-
-	//normalize format of self PCM
-	util.normalizeFormat(this);
-
-	//set data count
-	this.count = 0;
+	Through.call(this, options);
 
 	//init values for channels
 	this.x1 = [];
@@ -39,7 +30,7 @@ function Biquad (options) {
 	this.update();
 }
 
-inherits(Biquad, Transform);
+inherits(Biquad, Through);
 
 
 /**
@@ -70,67 +61,35 @@ Biquad.prototype.type = 'lowpass';
 Biquad.prototype.update = function () {
 	var method = 'set' + this.type[0].toUpperCase() + this.type.slice(1) + 'Params';
 
-	var time = this.count / this.sampleRate;
+	var time = this.count / this.inputFormat.sampleRate;
 
-	var f = this.frequency instanceof Function ? this.frequency(time) : this.frequency;
-	var nyquist = 0.5 * this.sampleRate;
+	var f = typeof this.frequency === 'function' ? this.frequency(time) : this.frequency;
+	var nyquist = 0.5 * this.inputFormat.sampleRate;
 	var normalizedFrequency = f / nyquist;
-	var detune = this.detune instanceof Function ? this.detune(time) : this.detune;
+	var detune = typeof this.detune === 'function' ? this.detune(time) : this.detune;
 	if (detune) {
 		normalizedFrequency *= Math.pow(2, detune / 1200);
 	}
 
-	var gain = this.gain instanceof Function ? this.gain(time) : this.gain;
-	var Q = this.Q instanceof Function ? this.Q(time) : this.Q;
+	var gain = typeof this.gain === 'function' ? this.gain(time) : this.gain;
+	var Q = typeof this.Q === 'function' ? this.Q(time) : this.Q;
 
 	this[method](normalizedFrequency, Q, gain);
 };
 
 
-/** Input/output PCM stream params */
-extend(Biquad.prototype, util.defaultFormat);
-
-
 /**
  * Processing function
  */
-Biquad.prototype._transform = function (chunk, enc, cb) {
+Biquad.prototype.process = function (buffer) {
 	var self = this;
 
-	//update params before the chunk handling
-	this.update();
-
 	//handle each channel
-	var data;
-	for (var channel = 0; channel < self.channels; channel++ ) {
-		data = processChannel(channel);
-		util.copyToChannel(chunk, fromFloat(data), channel, self);
+	for (var channel = 0, l = Math.min(buffer.numberOfChannels, self.inputFormat.channels); channel < l; channel++ ) {
+		processChannel(channel, buffer.getChannelData(channel));
 	}
 
-	//update samples counter
-	this.count += data.length;
-
-	cb(null, chunk);
-
-	function toFloat(array) {
-		var data = [];
-		for (var i = 0; i < array.length; i++) {
-			data[i] = util.convertSample(array[i], self, {float: true});
-		}
-		return data;
-	}
-	function fromFloat(array) {
-		var data = [];
-		for (var i = 0; i < array.length; i++) {
-			data[i] = util.convertSample(array[i], {float: true}, self);
-		}
-		return data;
-	}
-
-	function processChannel (channel) {
-		var channelData = toFloat(util.getChannelData(chunk, channel, self));
-		var data = new Float32Array(channelData.length);
-
+	function processChannel (channel, channelData) {
 		//create local copies of member variables
 		var x1 = self.x1[channel] || 0;
 		var x2 = self.x2[channel] || 0;
@@ -142,14 +101,14 @@ Biquad.prototype._transform = function (chunk, enc, cb) {
 		var a1 = self.a1;
 		var a2 = self.a2;
 
-		//process chunk
 		var x, y;
 
 		for (var i = 0; i < channelData.length; i++) {
 			x = channelData[i];
+
 			y = b0*x + b1*x1 + b2*x2 - a1*y1 - a2*y2;
 
-			data[i] = y;
+			channelData[i] = y;
 
 			// Update state variables
 			x2 = x1;
@@ -163,8 +122,6 @@ Biquad.prototype._transform = function (chunk, enc, cb) {
 		self.x2[channel] = x2;
 		self.y1[channel] = y1;
 		self.y2[channel] = y2;
-
-		return data;
 	}
 }
 

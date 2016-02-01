@@ -8,7 +8,7 @@ Generator({
 	generate: function () {
 		return [Math.random(), Math.random()];
 	},
-	duration: 2
+	duration: 4
 })
 .pipe(Filter({
 	type: 'bandpass',
@@ -18,3 +18,6 @@ Generator({
 }))
 .pipe(Volume(100))
 .pipe(Speaker());
+
+
+setTimeout(function () {}, 4000);
