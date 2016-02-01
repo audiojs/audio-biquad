@@ -1,4 +1,4 @@
-Biquad filter stream. API is closely copied from web-audio’s [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode).
+Biquad filter stream. API is similar to [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode).
 
 [![npm install audio-biquad](https://nodei.co/npm/audio-biquad.png?mini=true)](https://npmjs.org/package/audio-biquad/)
 
@@ -8,7 +8,9 @@ var BiquadFilter = require('audio-biquad');
 var Speaker = require('audio-speaker');
 var Generator = require('audio-generator');
 
-Generator({
+Generator(function () {
+	return Math.random() * 2 - 1;
+}, {
 	duration: 2
 })
 .pipe(BiquadFilter({
