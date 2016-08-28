@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "audio-buffer-utils": "^2.0.1",
-    "audio-through": "^2.1.4",
+    "audio-through": "^2.1.6",
     "inherits": "^2.0.1",
     "xtend": "^4.0.0"
   }
