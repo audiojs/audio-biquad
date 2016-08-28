@@ -5,6 +5,8 @@
  * @module  audio-biquad
  */
 
+'use strict';
+
 var Through = require('audio-through');
 var extend = require('xtend/mutable');
 var inherits = require('inherits');
@@ -61,10 +63,10 @@ Biquad.prototype.type = 'lowpass';
 Biquad.prototype.update = function () {
 	var method = 'set' + this.type[0].toUpperCase() + this.type.slice(1) + 'Params';
 
-	var time = this.count / this.inputFormat.sampleRate;
+	var time = this.count / this.format.sampleRate;
 
 	var f = typeof this.frequency === 'function' ? this.frequency(time) : this.frequency;
-	var nyquist = 0.5 * this.inputFormat.sampleRate;
+	var nyquist = 0.5 * this.format.sampleRate;
 	var normalizedFrequency = f / nyquist;
 	var detune = typeof this.detune === 'function' ? this.detune(time) : this.detune;
 	if (detune) {
@@ -85,7 +87,7 @@ Biquad.prototype.process = function (buffer) {
 	var self = this;
 
 	//handle each channel
-	for (var channel = 0, l = Math.min(buffer.numberOfChannels, self.inputFormat.channels); channel < l; channel++ ) {
+	for (var channel = 0, l = Math.min(buffer.numberOfChannels, self.format.channels); channel < l; channel++ ) {
 		processChannel(channel, buffer.getChannelData(channel));
 	}
 

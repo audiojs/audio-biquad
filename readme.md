@@ -1,3 +1,5 @@
+# audio-biquad [![Build Status](https://travis-ci.org/audiojs/audio-biquad.svg?branch=master)](https://travis-ci.org/audiojs/audio-biquad) [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
+
 Biquad filter stream. API is similar to [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode).
 
 [![npm install audio-biquad](https://nodei.co/npm/audio-biquad.png?mini=true)](https://npmjs.org/package/audio-biquad/)
