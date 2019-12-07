@@ -36,7 +36,7 @@
     "pcm-volume": "latest"
   },
   "optionalDependencies": {
-    "audio-speaker": "^1.2.1",
+    "audio-speaker": "^1.2.1"
   },
   "dependencies": {
     "audio-through": "^2.1.4",
