@@ -33,8 +33,10 @@
   "homepage": "https://github.com/audiojs/audio-biquad",
   "devDependencies": {
     "audio-generator": "^2.0.2",
-    "audio-speaker": "^1.2.1",
     "pcm-volume": "latest"
+  },
+  "optionalDependencies": {
+    "audio-speaker": "^1.2.1"
   },
   "dependencies": {
     "audio-through": "^2.1.4",
